@@ -16,14 +16,31 @@
         android:layout_margin="16dp"
         android:entries="@array/beer_colors"/>
 
-    <Button
-        android:id="@+id/find_beer"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="16dp"
-        android:text="@string/find_beer"
-        android:onClick="onClickFindBeer"/>
+        android:layout_gravity="center">
+
+        <Button
+            android:id="@+id/find_beer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/find_beer"
+            android:onClick="onClickFindBeer"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/lucky"
+            android:onClick="getRandom"/>
+    </LinearLayout>
+
 
     <TextView
         android:id="@+id/brands"
@@ -32,5 +49,15 @@
         android:layout_gravity="center"
         android:layout_margin="16dp"
         android:text="@string/brands" />
+
+    <TextView
+        android:id="@+id/nameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textAlignment="center"
+        android:textSize="16dp"
+        android:textColor="#00a39d"
+        android:text="@string/myInfo"/>
 
 </LinearLayout>

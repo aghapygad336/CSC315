@@ -2,10 +2,14 @@
     <string name="app_name">Beer Adviser</string>
     <string name="find_beer">Find Beer!</string>
     <string name="brands">No beers selected</string>
+    <string name="myInfo">My name is Brent Belanger and this is my first assignment!</string>
+    <string name="lucky">I\'m Feeling Lucky!</string>
+    <string name="randomResult">Your Lucky Choice is: %1$s</string>
     <string-array name="beer_colors">
         <item>light</item>
         <item>amber</item>
         <item>brown</item>
         <item>dark</item>
     </string-array>
+
 </resources>

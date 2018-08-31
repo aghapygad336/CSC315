@@ -39,4 +39,25 @@ public class FindBeerActivity extends Activity {
         brands.setText(brandsListBuilder);
 
     }
+
+    public void getRandom(View view){
+
+        //gets the brands TextView for editing
+        TextView brands = (TextView) findViewById(R.id.brands);
+
+        //gets the spinner object to get value
+        Spinner color = (Spinner) findViewById(R.id.color);
+
+        //gets the text in the spinner
+        String beerType = String.valueOf(color.getSelectedItem());
+
+        //gets a random beer
+        String randomBeer = expert.findRandom(beerType);
+
+        //sets the random beer to the display text
+        String luckyChoice = getString(R.string.randomResult, randomBeer);
+
+        //update dat view
+        brands.setText(luckyChoice);
+    }
 }
