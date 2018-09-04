@@ -24,6 +24,7 @@ public class BeerExpert {
         Random randomGenerator = new Random();
         List<String> beer = new ArrayList<>();
 
+        //this is a gross way of doing this, but it's functional for now
         switch (type){
             case "light":
                 beer.add("Miller Light");

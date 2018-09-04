@@ -5,11 +5,20 @@
     <string name="myInfo">My name is Brent Belanger and this is my first assignment!</string>
     <string name="lucky">I\'m Feeling Lucky!</string>
     <string name="randomResult">Your Lucky Choice is: %1$s</string>
+    <string name="normaltext">Normal Text</string>
+    <string name="rainbowtext">Rainbow Text</string>
     <string-array name="beer_colors">
         <item>light</item>
         <item>amber</item>
         <item>brown</item>
         <item>dark</item>
     </string-array>
-
+    <color name="seahawk">#00a39d</color>
+    <color  name="violet">#9400D3</color>
+    <color  name="indigo">#4B0082</color>
+    <color  name="blue">#0000FF</color>
+    <color  name="green">#00FF00</color>
+    <color  name="yellow">#FFFF00</color>
+    <color  name="orange">#FF7F00</color>
+    <color  name="red">#FF0000</color>
 </resources>

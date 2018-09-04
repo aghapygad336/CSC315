@@ -1,10 +1,20 @@
 package com.hfad.beeradviser;
 
 import android.app.Activity;
+import android.graphics.Color;
+import android.graphics.LinearGradient;
+import android.graphics.Shader;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.ToggleButton;
+
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 public class FindBeerActivity extends Activity {
@@ -14,6 +24,36 @@ public class FindBeerActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_beer);
+        ToggleButton toggle = (ToggleButton) findViewById(R.id.rainbowButton);
+        Switch catSwitch = (Switch) findViewById(R.id.catSwitch);
+
+        toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    TextView nameText = (TextView) findViewById(R.id.nameText);
+                    nameText.setTextColor(Color.BLUE);
+                }else{
+                    TextView nameText = (TextView) findViewById(R.id.nameText);
+                    nameText.setTextColor(Color.parseColor("#00a39d"));
+                }
+            }
+        });
+
+        catSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    ImageView catView = (ImageView) findViewById(R.id.catView);
+                    catView.setVisibility(View.VISIBLE);
+                }else{
+                    ImageView catView = (ImageView) findViewById(R.id.catView);
+                    catView.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
+
     }
 
     public void onClickFindBeer(View view){
@@ -59,5 +99,21 @@ public class FindBeerActivity extends Activity {
 
         //update dat view
         brands.setText(luckyChoice);
+    }
+
+    public void rainbowText(View view){
+        TextView nameText = (TextView) findViewById(R.id.nameText);
+
+        ToggleButton colorButton = (ToggleButton) findViewById(R.id.rainbowButton);
+
+        if (!colorButton.isChecked()){
+
+        }else{
+
+        }
+
+
+
+
     }
 }
