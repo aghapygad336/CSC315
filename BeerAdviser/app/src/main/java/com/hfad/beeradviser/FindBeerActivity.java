@@ -24,17 +24,17 @@ public class FindBeerActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_beer);
-        ToggleButton toggle = (ToggleButton) findViewById(R.id.rainbowButton);
-        Switch catSwitch = (Switch) findViewById(R.id.catSwitch);
+        ToggleButton toggle = findViewById(R.id.rainbowButton);
+        Switch catSwitch = findViewById(R.id.catSwitch);
 
         toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked){
-                    TextView nameText = (TextView) findViewById(R.id.nameText);
+                    TextView nameText = findViewById(R.id.nameText);
                     nameText.setTextColor(Color.BLUE);
                 }else{
-                    TextView nameText = (TextView) findViewById(R.id.nameText);
+                    TextView nameText = findViewById(R.id.nameText);
                     nameText.setTextColor(Color.parseColor("#00a39d"));
                 }
             }
@@ -44,10 +44,10 @@ public class FindBeerActivity extends Activity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-                    ImageView catView = (ImageView) findViewById(R.id.catView);
+                    ImageView catView = findViewById(R.id.catView);
                     catView.setVisibility(View.VISIBLE);
                 }else{
-                    ImageView catView = (ImageView) findViewById(R.id.catView);
+                    ImageView catView = findViewById(R.id.catView);
                     catView.setVisibility(View.INVISIBLE);
                 }
             }
@@ -59,10 +59,10 @@ public class FindBeerActivity extends Activity {
     public void onClickFindBeer(View view){
 
         //get reference to the textview
-        TextView brands = (TextView) findViewById(R.id.brands);
+        TextView brands = findViewById(R.id.brands);
 
         //get reference to the spinner
-        Spinner color = (Spinner) findViewById(R.id.color);
+        Spinner color = findViewById(R.id.color);
 
         //get selected item in the spinner
         String beerType = String.valueOf(color.getSelectedItem());
@@ -99,21 +99,5 @@ public class FindBeerActivity extends Activity {
 
         //update dat view
         brands.setText(luckyChoice);
-    }
-
-    public void rainbowText(View view){
-        TextView nameText = (TextView) findViewById(R.id.nameText);
-
-        ToggleButton colorButton = (ToggleButton) findViewById(R.id.rainbowButton);
-
-        if (!colorButton.isChecked()){
-
-        }else{
-
-        }
-
-
-
-
     }
 }
