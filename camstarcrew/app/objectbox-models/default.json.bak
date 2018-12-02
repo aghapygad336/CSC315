@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:5313890752019282777",
-      "lastPropertyId": "7:2742691450365292952",
+      "lastPropertyId": "8:9201890828471878799",
       "name": "BuildingInfo",
       "properties": [
         {
@@ -26,12 +26,12 @@
           "name": "url"
         },
         {
-          "id": "5:3959366566449930589",
-          "name": "resourceId"
-        },
-        {
           "id": "6:5056626229768625954",
           "name": "caption"
+        },
+        {
+          "id": "8:9201890828471878799",
+          "name": "picture"
         }
       ],
       "relations": []
@@ -49,7 +49,8 @@
     1649115087944659510
   ],
   "retiredPropertyUids": [
-    2742691450365292952
+    2742691450365292952,
+    3959366566449930589
   ],
   "retiredRelationUids": [],
   "version": 1

@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:5313890752019282777",
-      "lastPropertyId": "8:9201890828471878799",
+      "lastPropertyId": "9:3169322320417833137",
       "name": "BuildingInfo",
       "properties": [
         {
@@ -32,6 +32,10 @@
         {
           "id": "8:9201890828471878799",
           "name": "picture"
+        },
+        {
+          "id": "9:3169322320417833137",
+          "name": "coordinates"
         }
       ],
       "relations": []

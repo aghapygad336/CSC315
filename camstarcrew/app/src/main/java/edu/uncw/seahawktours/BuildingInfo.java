@@ -9,7 +9,8 @@ import io.objectbox.annotation.Index;
 @Entity
 public class BuildingInfo extends Activity {
 
-    @Id public long id;
+    @Id
+    public long id;
 
     @Index
     private String Name;
@@ -17,6 +18,7 @@ public class BuildingInfo extends Activity {
     private String url;
     private String picture;
     private String caption;
+    private String coordinates;
 
 //    public static final BuildingInfo[] buildings = {
 //          //  new BuildingInfo(R.string.cis_title, R.string.cis_info, R.string.cis_pic_caption, R.string.cis_url, R.drawable.cis1),
@@ -28,12 +30,13 @@ public class BuildingInfo extends Activity {
 //    };
 
 
-    public BuildingInfo(String Name, String Description, String Caption, String url, String picture) {
+    public BuildingInfo(String Name, String Description, String Caption, String url, String picture, String coordinates) {
         this.Name = Name;
         this.Description = Description;
         this.url = url;
         this.picture = picture;
         this.caption = Caption;
+        this.coordinates = coordinates;
     }
 
     public String getName() {
@@ -54,6 +57,10 @@ public class BuildingInfo extends Activity {
 
     public String getCaption() {
         return caption;
+    }
+
+    public String getCoordinates(){
+        return coordinates;
     }
 
 }

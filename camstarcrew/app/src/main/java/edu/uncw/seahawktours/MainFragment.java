@@ -1,141 +1,145 @@
 package edu.uncw.seahawktours;
 
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
+
+import java.util.List;
+
 import io.objectbox.Box;
 import io.objectbox.BoxStore;
 import io.objectbox.query.Query;
 
-import java.util.List;
+import static android.content.Context.LOCATION_SERVICE;
 
 public class MainFragment extends Fragment {
 
-//    private boolean isFirstLoad = true;
     private FragmentActivity myContext;
     private Box<BuildingInfo> buildingBox;
     private Query<BuildingInfo> buildingQuery;
     CaptionedImagesAdapter adapter;
+    private LocationManager locationManager;
+    private LocationListener locationListener;
+    private String currentLocation;
+
 
     public MainFragment() {
         // Required empty public constructor
     }
 
+    @SuppressLint("MissingPermission")
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
 
         CoordinatorLayout buildingCoord = (CoordinatorLayout) inflater.inflate(R.layout.fragment_building, container, false);
-        RecyclerView buildingRecycler = buildingCoord.findViewById(R.id.building_recycler);
-
-        //insert some DB stuff later for this!
-//        String[] buildingNames = new String[Building.buildings.length];
-//        for (int i = 0; i < buildingNames.length; i++) {
-//            buildingNames[i] = Building.buildings[i].getName();
-//
-//        }
-//
-//        int[] buildingImages = new int[Building.buildings.length];
-//        for (int i = 0; i < buildingImages.length; i++) {
-//            buildingImages[i] = Building.buildings[i].getImageResourceId();
-//        }
+        final RecyclerView buildingRecycler = buildingCoord.findViewById(R.id.building_recycler);
 
         BoxStore boxStore = App.getBoxStore();
         buildingBox = boxStore.boxFor(BuildingInfo.class);
 
         buildingQuery = buildingBox.query().build();
-        updateBuildings();
 
+        locationManager = (LocationManager) this.getContext().getSystemService(LOCATION_SERVICE);
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                Log.d("Location: ", location.toString());
+                currentLocation = location.getLatitude() + "," + location.getLongitude();
+                updateBuildings(buildingRecycler, currentLocation);
+                //if in geofence, return new intent of the position on the list
+                //update the cardviews
+            }
 
-      //  CaptionedImagesAdapter adapter = new CaptionedImagesAdapter(buildingNames, buildingImages);
-        buildingRecycler.setAdapter(adapter);
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        };
+
+        if (Build.VERSION.SDK_INT < 23) {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 10, locationListener);
+        } else {
+
+            if (ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                ActivityCompat.requestPermissions(this.getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+
+            } else {
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 10, locationListener);
+                Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                currentLocation = location.getLatitude() + "," + location.getLongitude();
+            }
+        }
+
+        updateBuildings(buildingRecycler, currentLocation);
+
         GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
         buildingRecycler.setLayoutManager(layoutManager);
 
-        adapter.setListener(new CaptionedImagesAdapter.Listener() {
-            @Override
-            public void onClick(int position) {
-                Intent intent = new Intent(getActivity(), DetailActivity.class);
-                intent.setType("text/plain");
-                intent.putExtra(DetailActivity.BUILDING_CHOSEN, position); //have to do this to account for the first position
-                getActivity().startActivity(intent);
-            }
-        });
-
         return buildingCoord;
 
-//        String[] items = getActivity().getResources().getStringArray(R.array.campus_buildings);
-//        final View v = inflater.inflate(R.layout.fragment_main, container, false);
-//        Spinner campusSpins = v.findViewById(R.id.building_spinner);
-//
-//        ArrayAdapter<String> buildingAdapter = new ArrayAdapter<>(inflater.getContext(), android.R.layout.simple_spinner_item, items);
-//        campusSpins.setAdapter(buildingAdapter);
-//
-//        campusSpins.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                if (position != 0) {
-//                    if (!isFirstLoad) {
-//                        View fragmentContainer = myContext.findViewById(R.id.fragment_container);
-//                        if (fragmentContainer != null) {
-//                            DetailFragment details = new DetailFragment();
-//                            FragmentTransaction ft = myContext.getSupportFragmentManager().beginTransaction();
-//                            details.setBuildingId(position - 1);
-//                            ft.replace(R.id.fragment_container, details);
-//                            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-//                            ft.addToBackStack(null);
-//                            ft.commit();
-//                        } else {
-//                            Intent intent = new Intent(getActivity(), DetailActivity.class);
-//
-//                            intent.setType("text/plain");
-//                            intent.putExtra(DetailActivity.BUILDING_CHOSEN, position - 1); //have to do this to account for the first position
-//                            startActivity(intent);
-//                        }
-//                    }
-//                }
-//                isFirstLoad = false;
-//            }
-
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });
-//
-//        return v;
     }
 
-    private void updateBuildings(){
+
+    private void updateBuildings(RecyclerView view, String currentLocation) {
 
         List<BuildingInfo> buildings = buildingQuery.find();
         String[] buildingNames = new String[buildings.size()];
         for (int i = 0; i < buildingNames.length; i++) {
             buildingNames[i] = buildings.get(i).getName();
-
         }
 
         String[] buildingImages = new String[buildings.size()];
         for (int i = 0; i < buildingImages.length; i++) {
             buildingImages[i] = buildings.get(i).getPicture();
         }
-        adapter = new CaptionedImagesAdapter(buildingNames, buildingImages);
+
+        String[] buildingLocations = new String[buildings.size()];
+        for (int i = 0; i < buildingLocations.length; i++) {
+            buildingLocations[i] = buildings.get(i).getCoordinates();
+        }
+        adapter = new CaptionedImagesAdapter(buildingNames, buildingImages, buildingLocations, currentLocation);
+        adapter.setListener(new CaptionedImagesAdapter.Listener() {
+            @Override
+            public void onClick(int position) {
+                Intent intent = new Intent(getActivity(), DetailActivity.class);
+                intent.setType("text/plain");
+                intent.putExtra(DetailActivity.BUILDING_CHOSEN, position);
+                getActivity().startActivity(intent);
+            }
+        });
+        view.setAdapter(adapter);
     }
 
     @Override
@@ -143,4 +147,16 @@ public class MainFragment extends Fragment {
         myContext = (FragmentActivity) activity;
         super.onAttach(activity);
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 10, locationListener);
+            }
+        }
+    }
+
 }
